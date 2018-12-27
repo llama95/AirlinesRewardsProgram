@@ -75,34 +75,6 @@ def added_new_passenger(passeng,data,data2):
     for passengers in list_of_passengers:
         print(passengers.passenger)
 
-
-
-
-def view_entries(search_query = None):
-    """View prev entries"""
-    entries = Passenger1.select().order_by(Passenger1.timestamp.desc())
-    # view entries in order of descending timestamp
-    if search_query:
-        entries = entries.where(Passenger1.content.contain(search_query))
-        # filters so all the entries we select have the content search in their attirbute
-    for entry in entries:
-        timestamp = entry.timestamp.strftime("%A,%B,%d,%Y,%I,%M,%p")
-        #weekday name, month name, number,year,hour,minute,am or pm
-        print(timestamp)
-        print(entry.content)
-        print("n)next entry")
-        print("d)del entry")
-
-        print("q)return to menu")
-
-
-
-def search_entries():
-    """Search entries for a string"""
-    view_entries(input("search query"))
-
-
-
 def create_passenger():
     """add a passenger"""
     print("Enter traveler name: "
@@ -116,6 +88,32 @@ def create_passenger():
     #         print("passenger saved succesfully")
     join_program(data)
 
+def view_entries(search_query = None):
+    """View prev entries"""
+    list_of_passengers = Passenger1.select(Passenger1)
+    # for i in list_of_passengers:
+    #     print("full list below")
+    #     print(i.passenger)
+    # for passengers in list_of_passengers:
+    #     print(passengers.passenger)
+    # passengers = Passenger1.select().order_by(Entry.timestamp.desc())
+    # view entries in order of descending timestamp
+    if search_query:
+        list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(search_query))
+        # filters so all the entries we select have the content search in their attirbute
+        for i in list_of_passengers:
+            print(i.passenger)
+
+
+def search_entries():
+    """Search entries for a string"""
+    list_of_passengers = Passenger1.select(Passenger1)
+    print("full list below")
+    for i in list_of_passengers:
+
+        print(i.passenger)
+    view_entries(input("search query"))
+
 
 def menu_loop():
     while True:
@@ -123,8 +121,8 @@ def menu_loop():
         menuchoice = menuChoice = input("    1.Create Traveler\n    2.Purchase Travel\n    3.Quit\n  >")
         if menuChoice == "1":
            create_passenger()
-        if menuChoice == 2:
-            pass #purchase travel
+        if menuChoice == "2":
+            search_entries()
         if menuChoice == 3:
             print("cya")
             exit()
@@ -147,7 +145,8 @@ if __name__ == '__main__':
 # print membership details with 1.name 2. programs 3. hotel memb numbers#
 #add the ability to create multiple passengers#
 #After we print membership details, loop back to main menu#
+
 #Purchase travel menu/options
-#select from the list of travelers
+#select passenger from the list of travelers#
 #
 
