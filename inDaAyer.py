@@ -1,6 +1,7 @@
 from peewee import *
 from collections import OrderedDict
 import sys
+from random import randint
 
 db = SqliteDatabase('Passenger_3rdtry.db')
 
@@ -16,11 +17,9 @@ def initialize():
     db.connect()
     db.create_tables([Passenger1])
 
-
 def join_program(passeng) :
     # program_choice = input("Select a frequent flyer travel program to join: \n1.Delta\n2.American")
     """join program(s)"""
-
     print("Select a frequent flyer travel program to join: \n1.Delta\n2.American"
           "\nPress control-D when finished")
     data = sys.stdin.read().strip()  # read all of the data that comes in
@@ -80,13 +79,34 @@ def create_passenger():
     print("Enter traveler name: "
           "\nPress control-D when finished")
     data = sys.stdin.read().strip()  # read all of the data that comes in
-    # data = input("Enter traveler name: ")
-    # if data:
-    #     inp = input("save entry y or n ").lower()
-    #     if inp != "n":
-    #         Passenger1.create(passenger=data)
-    #         print("passenger saved succesfully")
     join_program(data)
+
+def buy_plane_ticket(passenger,program,program2):
+    print("Please choose from the following options")
+    ticket_choice = input("1.Buy plane ticket\n2.Return to main menu")
+    if ticket_choice == "1":
+        print("Select airline")
+        airline_choice = input("1.Delta Airlines 2.American Airlines")
+        number_of_travelers = input("Enter Number of travelers")
+        #sammy belongs to 1/delta
+        #if the airline choice 1/2 is not airline choice cant be both program 1 and 2
+        #if airline choice is not in program 1 or program 2
+        if airline_choice not in program:
+            if airline_choice not in program2:
+                print("Passenger does not belong to this program2")
+        if airline_choice not in program2:
+            if airline_choice not in program:
+                print("Passenger does not belong to this program1234")
+        print("Number of miles: {}".format(randint(500, 1500)))
+        if airline_choice == "1":
+            airline_choice = "Delta Airlines"
+        if airline_choice == "2":
+            airline_choice = "American Airlines"
+        print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
+
+        print(passenger)# passengers name
+        print(program2) # 2nd program they joined
+        print(program) #first program they joined
 
 def view_entries(search_query = None):
     """View prev entries"""
@@ -102,22 +122,23 @@ def view_entries(search_query = None):
         list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(search_query))
         # filters so all the entries we select have the content search in their attirbute
         for i in list_of_passengers:
-            print(i.passenger)
-
+            buy_plane_ticket(i.passenger,i.program,i.program2)
+            # print(i.passenger)
+            # jill = i.program2
+            # if "2" in jill: #instead of if jill.contains("2) WHY?!
+            #     print("FUCKERY")
+            #     print(jill)
 
 def search_entries():
     """Search entries for a string"""
     list_of_passengers = Passenger1.select(Passenger1)
-    print("full list below")
+    print("Select Traveler")
     for i in list_of_passengers:
-
         print(i.passenger)
-    view_entries(input("search query"))
-
+    view_entries(input(">Enter Traveler Name"))
 
 def menu_loop():
     while True:
-
         menuchoice = menuChoice = input("    1.Create Traveler\n    2.Purchase Travel\n    3.Quit\n  >")
         if menuChoice == "1":
            create_passenger()
@@ -126,8 +147,6 @@ def menu_loop():
         if menuChoice == 3:
             print("cya")
             exit()
-        # else:
-        #     print("value is out of range")
 
 if __name__ == '__main__':
     initialize()
@@ -148,5 +167,10 @@ if __name__ == '__main__':
 
 #Purchase travel menu/options
 #select passenger from the list of travelers#
-#
+#Buy plane ticket option-->
+#if they dont belong to a program, notify them/dont allow "buy plane ticket"#
+#if they belong to program, allow them to select airline program to continue#
+#Ask for number of travelers, y/n rewards ticket?, number of miles earned
+#Display purchased ticket prompt--> Includes passenger name, membership info/number w/...
+#...updated miles amount
 
