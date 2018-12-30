@@ -3,14 +3,14 @@ from collections import OrderedDict
 import sys
 from random import randint
 
-db = SqliteDatabase('Passenger_3rdtry.db')
+db = SqliteDatabase('Passenger_5rdtry.db')
 
 class Passenger1(Model):
 
     passenger = CharField(max_length=255, unique=True)
     program = CharField(max_length=255)
     program2 = CharField(max_length=255)
-
+    miles = IntegerField
     class Meta:
         database = db
 def initialize():
@@ -31,12 +31,12 @@ def join_program(passeng) :
             try:
                 inp = input("save entry y or n ").lower()
                 if inp != "n":
-                    Passenger1.create(passenger=passeng,program=data,program2=null)
+                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=None)
                     print("prgram saved succesfully")
             except IntegrityError:
-                print("hit integ error")
+                print("hit integ error1")
                 pass
-        added_new_passenger(passeng,data,None)
+        added_new_passenger(passeng,data,None,None)
         if add_another_program == "y":
             print("Select a frequent flyer travel program to join: \n1.Delta\n2.American"
                   "\nPress control-D when finished")
@@ -45,13 +45,13 @@ def join_program(passeng) :
                 try:
                     inp = input("save entry y or n ").lower()
                     if inp != "n":
-                        Passenger1.create(passenger=passeng, program=data, program2=data2)
+                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=None)
                         print("Program 2 saved succesfully")
                 except IntegrityError:
-                    print("hit integ error")
+                    print("hit integ error2")
                     pass
-            added_new_passenger(passeng,data,data2)
-def added_new_passenger(passeng,data,data2):
+            added_new_passenger(passeng,data,data2,None)
+def added_new_passenger(passeng,data,data2,miles=None):
     if data == "1":
         data = "Delta Airlines Frequent Flier Program"
     if data == "2":
@@ -62,14 +62,19 @@ def added_new_passenger(passeng,data,data2):
         data2 = "American Airlines Frequent Flier Program"
     print("Added new traveler")
     print("Name: {}".format(passeng))
-    student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
-    print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,student,data2,student))
+    try:
+        student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
+        print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,student,data2,student))
+    except IntegrityError:
+        print("didnt work")
+        print("Nobody in db yet")
     # id_num = Passenger1.select()
     # for id_nums in id_num:
     #     print("ID NUMBER")
     #     print(id_nums.id)
     # student2 = Passenger1.select().order_by(Passenger1.passenger.get()) #sort Passenger1.id's in desc order, get the first one
     # print(student2)
+
     list_of_passengers = Passenger1.select(Passenger1)
     for passengers in list_of_passengers:
         print(passengers.passenger)
@@ -97,13 +102,14 @@ def buy_plane_ticket(passenger,program,program2):
         if airline_choice not in program2:
             if airline_choice not in program:
                 print("Passenger does not belong to this program1234")
-        print("Number of miles: {}".format(randint(500, 1500)))
+        miles_earned = print("Number of miles: {}".format(randint(500, 1500)))
+        print(miles_earned)
         if airline_choice == "1":
             airline_choice = "Delta Airlines"
         if airline_choice == "2":
             airline_choice = "American Airlines"
+        Passenger1.update()
         print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
-
         print(passenger)# passengers name
         print(program2) # 2nd program they joined
         print(program) #first program they joined
@@ -144,7 +150,7 @@ def menu_loop():
            create_passenger()
         if menuChoice == "2":
             search_entries()
-        if menuChoice == 3:
+        if menuChoice == "3":
             print("cya")
             exit()
 
@@ -170,7 +176,7 @@ if __name__ == '__main__':
 #Buy plane ticket option-->
 #if they dont belong to a program, notify them/dont allow "buy plane ticket"#
 #if they belong to program, allow them to select airline program to continue#
-#Ask for number of travelers, y/n rewards ticket?, number of miles earned
+#Ask for number of travelers, y/n rewards ticket?, number of miles earned#
 #Display purchased ticket prompt--> Includes passenger name, membership info/number w/...
 #...updated miles amount
-
+#add miles column to our db
