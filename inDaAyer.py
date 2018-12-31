@@ -11,6 +11,9 @@ class Passenger1(Model):
     program = CharField(max_length=255)
     program2 = CharField(max_length=255)
     miles = CharField(max_length=255)
+    american_membership = CharField(max_length=255, unique=True)
+    delta_membership = CharField(max_length=255, unique=True)
+
     class Meta:
         database = db
 def initialize():
@@ -31,7 +34,8 @@ def join_program(passeng) :
             try:
                 inp = input("save entry y or n ").lower()
                 if inp != "n":
-                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=0)
+                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=0,american_membership=None,
+                                      delta_membership=None)
                     print("prgram saved succesfully")
             except IntegrityError:
                 print("hit integ error1")
@@ -45,13 +49,18 @@ def join_program(passeng) :
                 try:
                     inp = input("save entry y or n ").lower()
                     if inp != "n":
-                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=0)
+                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=0,american_membership=None,
+                                      delta_membership=None)
                         print("Program 2 saved succesfully")
                 except IntegrityError:
                     print("hit integ error2")
                     pass
             added_new_passenger(passeng,data,data2,0)
 def added_new_passenger(passeng,data,data2,miles=0):
+    if "null" in data:
+        data = "Didnt Choose Delta Program"
+    if "null" in data2:
+        data = "Didnt Choose American Program"
     if data == "1":
         data = "Delta Airlines Frequent Flier Program"
     if data == "2":
@@ -63,8 +72,16 @@ def added_new_passenger(passeng,data,data2,miles=0):
     print("Added new traveler")
     print("Name: {}".format(passeng))
     try:
-        student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
-        print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,student,data2,student))
+        american_member_number = randint(1,5000)
+        delta_member_number = randint(1,5000)
+        # student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
+        list_of_passengers = Passenger1.select(Passenger1)
+        list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passeng))
+        for i in list_of_passengers:
+            i.miles = miles
+        update = Passenger1.update(miles=i.miles)
+        update.execute()
+        print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,delta_member_number,data2,american_member_number))
     except IntegrityError:
         print("didnt work")
         print("Nobody in db yet")
@@ -106,10 +123,10 @@ def buy_plane_ticket(passenger,program,program2,miles):
                 ticket_type = "Domestic Tickets"
                 if number_of_travelers == "1":
                     ticket_type = "Domestic Ticket"
-                if miles < int("25000"):
+                if miles < int("2500"):
                     # math = int("25000") * number_of_travelers
                     # print(math)
-                    domestic_must = int("25000")
+                    domestic_must = int("2500")
                     print("failed to reedem award travel. Passenger has {} miles but needs {} miles for {} {} ".format(miles,(domestic_must*int(number_of_travelers)),number_of_travelers,ticket_type))
 
                     return
