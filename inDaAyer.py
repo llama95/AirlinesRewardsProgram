@@ -68,16 +68,6 @@ def added_new_passenger(passeng,data,data2,miles=0):
     except IntegrityError:
         print("didnt work")
         print("Nobody in db yet")
-    # id_num = Passenger1.select()
-    # for id_nums in id_num:
-    #     print("ID NUMBER")
-    #     print(id_nums.id)
-    # student2 = Passenger1.select().order_by(Passenger1.passenger.get()) #sort Passenger1.id's in desc order, get the first one
-    # print(student2)
-
-    # list_of_passengers = Passenger1.select(Passenger1)
-    # for passengers in list_of_passengers:
-    #     print(passengers.passenger)
 
 def create_passenger():
     """add a passenger"""
@@ -93,6 +83,13 @@ def buy_plane_ticket(passenger,program,program2,miles):
         print("Select airline")
         airline_choice = input("1.Delta Airlines 2.American Airlines")
         number_of_travelers = input("Enter Number of travelers")
+        rewards_ticket = input("Will this be a rewards ticket y/n?")
+        if rewards_ticket == "y":
+            print("Select Ticket Type")
+            ticket_type = input("1.Domestic 2.Domestic First 3.International")
+            if ticket_type == "1":
+                if miles < int("25000"):
+                    print("failed to reedem award travel. Passenger has {} miles but needs 25000".format(miles))
         #sammy belongs to 1/delta
         #if the airline choice 1/2 is not airline choice cant be both program 1 and 2
         #if airline choice is not in program 1 or program 2
@@ -118,20 +115,11 @@ def view_entries(search_query = None):
     """View prev entries"""
     list_of_passengers = Passenger1.select(Passenger1)
     miles = randint(500, 1500)
-
-    # for i in list_of_passengers:
-    #     print("full list below")
-    #     print(i.passenger)
-    # for passengers in list_of_passengers:
-    #     print(passengers.passenger)
-    # passengers = Passenger1.select().order_by(Entry.timestamp.desc())
-    # view entries in order of descending timestamp
     if search_query:
         miles_var = list_of_passengers.where(Passenger1.miles.contains(search_query))
         # for i in miles_var:
         #     print(i.miles)
         list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(search_query))
-        var = "0"
         # filters so all the entries we select have the content search in their attirbute
         for i in list_of_passengers:
             print("before update {}".format(i.miles))
@@ -175,7 +163,7 @@ if __name__ == '__main__':
     menu_loop()
 
 #use ordered dict and docstrings to control the menu loop to run the methods that
-#we need to do
+#we need to do?
 
 # TODO
 #12/27
@@ -201,6 +189,7 @@ if __name__ == '__main__':
 #12/30
 #if they already have miles, add miles from new trip#
 #if they have no miles, add the miles#
+#add legit rewards numbers for the american and delta rewards programs
 
 
 
