@@ -3,7 +3,7 @@ from collections import OrderedDict
 import sys
 from random import randint
 
-db = SqliteDatabase('Passenger_6rdtry.db')
+db = SqliteDatabase('Passenger_7rdtry.db')
 
 class Passenger1(Model):
 
@@ -34,13 +34,13 @@ def join_program(passeng) :
             try:
                 inp = input("save entry y or n ").lower()
                 if inp != "n":
-                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=0,american_membership=None,
-                                      delta_membership=None)
+                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=0,american_membership=null,
+                                      delta_membership=null)
                     print("prgram saved succesfully")
             except IntegrityError:
                 print("hit integ error1")
                 pass
-            added_new_passenger(passeng,data,None,0)
+            added_new_passenger(passeng,data,0)
         if add_another_program == "y":
             print("Select a frequent flyer travel program to join: \n1.Delta\n2.American"
                   "\nPress control-D when finished")
@@ -49,38 +49,51 @@ def join_program(passeng) :
                 try:
                     inp = input("save entry y or n ").lower()
                     if inp != "n":
-                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=0,american_membership=None,
-                                      delta_membership=None)
+                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=0,american_membership=null,
+                                      delta_membership=null)
                         print("Program 2 saved succesfully")
                 except IntegrityError:
                     print("hit integ error2")
                     pass
             added_new_passenger(passeng,data,data2,0)
 def added_new_passenger(passeng,data,data2,miles=0):
-    if "null" in data:
+    american_member_number = randint(1, 5000)
+    delta_member_number = randint(1, 5000)
+    list_of_passengers = Passenger1.select(Passenger1)
+    list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passeng))
+
+    if "True" in data:
         data = "Didnt Choose Delta Program"
-    if "null" in data2:
+    if "True" in data2:
         data = "Didnt Choose American Program"
     if data == "1":
+        for i in list_of_passengers:
+            i.american_membership = american_member_number
+        update = Passenger1.update(american_membership=american_member_number)
+        update.execute()
         data = "Delta Airlines Frequent Flier Program"
     if data == "2":
+        for i in list_of_passengers:
+            i.delta_membership = delta_member_number
+        update = Passenger1.update(delta_membership=delta_member_number)
+        update.execute()
         data = "American Airlines Frequent Flier Program"
     if data2 == "1":
+        for i in list_of_passengers:
+            i.american_membership = american_member_number
+        update = Passenger1.update(american_membership=american_member_number)
+        update.execute()
         data2 = "Delta Airlines Frequent Flier Program"
     if data2 == "2":
+        for i in list_of_passengers:
+            i.delta_membership = delta_member_number
+        update = Passenger1.update(delta_membership=american_member_number)
+        update.execute()
         data2 = "American Airlines Frequent Flier Program"
     print("Added new traveler")
     print("Name: {}".format(passeng))
     try:
-        american_member_number = randint(1,5000)
-        delta_member_number = randint(1,5000)
         # student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
-        list_of_passengers = Passenger1.select(Passenger1)
-        list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passeng))
-        for i in list_of_passengers:
-            i.miles = miles
-        update = Passenger1.update(miles=i.miles)
-        update.execute()
         print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,delta_member_number,data2,american_member_number))
     except IntegrityError:
         print("didnt work")
