@@ -103,8 +103,16 @@ def buy_plane_ticket(passenger,program,program2,miles):
             print("Select Ticket Type")
             ticket_type = input("1.Domestic 2.Domestic First 3.International")
             if ticket_type == "1":
-                if miles < int("2500"):
-                    print("failed to reedem award travel. Passenger has {} miles but needs 25000".format(miles))
+                ticket_type = "Domestic Tickets"
+                if number_of_travelers == "1":
+                    ticket_type = "Domestic Ticket"
+                if miles < int("25000"):
+                    # math = int("25000") * number_of_travelers
+                    # print(math)
+                    domestic_must = int("25000")
+                    print("failed to reedem award travel. Passenger has {} miles but needs {} miles for {} {} ".format(miles,(domestic_must*int(number_of_travelers)),number_of_travelers,ticket_type))
+
+                    return
                 else:
                     ticket_type = "Domestic Tickets"
                     if number_of_travelers == "1":
