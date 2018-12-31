@@ -83,13 +83,6 @@ def buy_plane_ticket(passenger,program,program2,miles):
         print("Select airline")
         airline_choice = input("1.Delta Airlines 2.American Airlines")
         number_of_travelers = input("Enter Number of travelers")
-        rewards_ticket = input("Will this be a rewards ticket y/n?")
-        if rewards_ticket == "y":
-            print("Select Ticket Type")
-            ticket_type = input("1.Domestic 2.Domestic First 3.International")
-            if ticket_type == "1":
-                if miles < int("25000"):
-                    print("failed to reedem award travel. Passenger has {} miles but needs 25000".format(miles))
         #sammy belongs to 1/delta
         #if the airline choice 1/2 is not airline choice cant be both program 1 and 2
         #if airline choice is not in program 1 or program 2
@@ -105,7 +98,28 @@ def buy_plane_ticket(passenger,program,program2,miles):
             airline_choice = "Delta Airlines"
         if airline_choice == "2":
             airline_choice = "American Airlines"
-        print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
+        rewards_ticket = input("Will this be a rewards ticket y/n?")
+        if rewards_ticket == "y":
+            print("Select Ticket Type")
+            ticket_type = input("1.Domestic 2.Domestic First 3.International")
+            if ticket_type == "1":
+                if miles < int("2500"):
+                    print("failed to reedem award travel. Passenger has {} miles but needs 25000".format(miles))
+                else:
+                    ticket_type = "Domestic Tickets"
+                    if ticket_type == "1":
+                        ticket_type = "Domestic Ticket"
+                    miles = miles - int("2500")
+                    print("Redeemed miles for {} {}".format(miles,ticket_type))
+                    list_of_passengers = Passenger1.select(Passenger1)
+                    list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passenger))
+                    for i in list_of_passengers:
+                        i.miles = miles
+                    update = Passenger1.update(miles=i.miles)
+                    update.execute()
+
+
+        # print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
         print(passenger)# passengers name
         print(program2) # 2nd program they joined
         print(program) #first program they joined
@@ -123,7 +137,7 @@ def view_entries(search_query = None):
         # filters so all the entries we select have the content search in their attirbute
         for i in list_of_passengers:
             print("before update {}".format(i.miles))
-            if "0" in i.miles:
+            if i.miles == "0":
                 print("found zero")
                 i.miles = miles
                 print(i.miles)
