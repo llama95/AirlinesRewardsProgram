@@ -3,14 +3,14 @@ from collections import OrderedDict
 import sys
 from random import randint
 
-db = SqliteDatabase('Passenger_5rdtry.db')
+db = SqliteDatabase('Passenger_6rdtry.db')
 
 class Passenger1(Model):
 
     passenger = CharField(max_length=255, unique=True)
     program = CharField(max_length=255)
     program2 = CharField(max_length=255)
-    miles = IntegerField
+    miles = CharField(max_length=255)
     class Meta:
         database = db
 def initialize():
@@ -31,12 +31,12 @@ def join_program(passeng) :
             try:
                 inp = input("save entry y or n ").lower()
                 if inp != "n":
-                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=None)
+                    Passenger1.create(passenger=passeng,program=data,program2=null,miles=0)
                     print("prgram saved succesfully")
             except IntegrityError:
                 print("hit integ error1")
                 pass
-        added_new_passenger(passeng,data,None,None)
+            added_new_passenger(passeng,data,None,0)
         if add_another_program == "y":
             print("Select a frequent flyer travel program to join: \n1.Delta\n2.American"
                   "\nPress control-D when finished")
@@ -45,13 +45,13 @@ def join_program(passeng) :
                 try:
                     inp = input("save entry y or n ").lower()
                     if inp != "n":
-                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=None)
+                        Passenger1.create(passenger=passeng, program=data, program2=data2,miles=0)
                         print("Program 2 saved succesfully")
                 except IntegrityError:
                     print("hit integ error2")
                     pass
-            added_new_passenger(passeng,data,data2,None)
-def added_new_passenger(passeng,data,data2,miles=None):
+            added_new_passenger(passeng,data,data2,0)
+def added_new_passenger(passeng,data,data2,miles=0):
     if data == "1":
         data = "Delta Airlines Frequent Flier Program"
     if data == "2":
@@ -75,9 +75,9 @@ def added_new_passenger(passeng,data,data2,miles=None):
     # student2 = Passenger1.select().order_by(Passenger1.passenger.get()) #sort Passenger1.id's in desc order, get the first one
     # print(student2)
 
-    list_of_passengers = Passenger1.select(Passenger1)
-    for passengers in list_of_passengers:
-        print(passengers.passenger)
+    # list_of_passengers = Passenger1.select(Passenger1)
+    # for passengers in list_of_passengers:
+    #     print(passengers.passenger)
 
 def create_passenger():
     """add a passenger"""
@@ -86,7 +86,7 @@ def create_passenger():
     data = sys.stdin.read().strip()  # read all of the data that comes in
     join_program(data)
 
-def buy_plane_ticket(passenger,program,program2):
+def buy_plane_ticket(passenger,program,program2,miles):
     print("Please choose from the following options")
     ticket_choice = input("1.Buy plane ticket\n2.Return to main menu")
     if ticket_choice == "1":
@@ -102,21 +102,23 @@ def buy_plane_ticket(passenger,program,program2):
         if airline_choice not in program2:
             if airline_choice not in program:
                 print("Passenger does not belong to this program1234")
-        miles_earned = print("Number of miles: {}".format(randint(500, 1500)))
-        print(miles_earned)
+        # miles_var = randint(500,1500)
+        # miles_earned = print("Number of miles: {}".format(miles))
         if airline_choice == "1":
             airline_choice = "Delta Airlines"
         if airline_choice == "2":
             airline_choice = "American Airlines"
-        Passenger1.update()
         print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
         print(passenger)# passengers name
         print(program2) # 2nd program they joined
         print(program) #first program they joined
+        print(miles)
 
 def view_entries(search_query = None):
     """View prev entries"""
     list_of_passengers = Passenger1.select(Passenger1)
+    miles = randint(500, 1500)
+
     # for i in list_of_passengers:
     #     print("full list below")
     #     print(i.passenger)
@@ -125,15 +127,29 @@ def view_entries(search_query = None):
     # passengers = Passenger1.select().order_by(Entry.timestamp.desc())
     # view entries in order of descending timestamp
     if search_query:
+        miles_var = list_of_passengers.where(Passenger1.miles.contains(search_query))
+        # for i in miles_var:
+        #     print(i.miles)
         list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(search_query))
+        var = "0"
         # filters so all the entries we select have the content search in their attirbute
         for i in list_of_passengers:
-            buy_plane_ticket(i.passenger,i.program,i.program2)
-            # print(i.passenger)
-            # jill = i.program2
-            # if "2" in jill: #instead of if jill.contains("2) WHY?!
-            #     print("FUCKERY")
-            #     print(jill)
+            print("before update {}".format(i.miles))
+            if "0" in i.miles:
+                print("found zero")
+                i.miles = miles
+                print(i.miles)
+            else:
+                print("found not zero")
+                i.miles = int(i.miles) + int(miles)
+            print(i.miles)
+        update = Passenger1.update(miles=i.miles)
+        update.execute()
+        buy_plane_ticket(i.passenger,i.program,i.program2,i.miles)
+
+#we have our miles attribute of our passenger, if the passenger already has miles from a prev...
+#...purchased ticket, we want to add miles from a newly purchased ticket to the miles from the prev purchased ticket
+#has to contain the search query and then do the miles shit
 
 def search_entries():
     """Search entries for a string"""
@@ -162,6 +178,7 @@ if __name__ == '__main__':
 #we need to do
 
 # TODO
+#12/27
 # add looping abilities to the adding of a program so they can have 2 programs#
 #add a program, ask if theyre done adding a program#
 #if done, create the entry with name,program1 info, program2 info = to nothing#
@@ -170,13 +187,22 @@ if __name__ == '__main__':
 # print membership details with 1.name 2. programs 3. hotel memb numbers#
 #add the ability to create multiple passengers#
 #After we print membership details, loop back to main menu#
-
+#12/28
 #Purchase travel menu/options
 #select passenger from the list of travelers#
 #Buy plane ticket option-->
+#12/29
 #if they dont belong to a program, notify them/dont allow "buy plane ticket"#
 #if they belong to program, allow them to select airline program to continue#
 #Ask for number of travelers, y/n rewards ticket?, number of miles earned#
 #Display purchased ticket prompt--> Includes passenger name, membership info/number w/...
-#...updated miles amount
-#add miles column to our db
+#...updated miles amount#
+#add miles column to our db#
+#12/30
+#if they already have miles, add miles from new trip#
+#if they have no miles, add the miles#
+
+
+
+
+
