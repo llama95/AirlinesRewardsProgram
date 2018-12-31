@@ -123,7 +123,7 @@ def buy_plane_ticket(passenger,program,program2,miles):
         print(passenger)# passengers name
         print(program2) # 2nd program they joined
         print(program) #first program they joined
-        print(miles)
+        print(miles) #miles
 
 def view_entries(search_query = None):
     """View prev entries"""
