@@ -203,7 +203,9 @@ if __name__ == '__main__':
 #12/30
 #if they already have miles, add miles from new trip#
 #if they have no miles, add the miles#
-#add legit rewards numbers for the american and delta rewards programs
+#add legit rewards numbers for the american and delta rewards programs#
+#use proper math when purchasing from domestic,domestic first,international... must have sufficent pts
+#add american and delta membership numbers to db... specific memebership numbers tied to specific passengers
 
 
 
