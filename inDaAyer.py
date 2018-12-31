@@ -107,7 +107,7 @@ def buy_plane_ticket(passenger,program,program2,miles):
                     print("failed to reedem award travel. Passenger has {} miles but needs 25000".format(miles))
                 else:
                     ticket_type = "Domestic Tickets"
-                    if ticket_type == "1":
+                    if number_of_travelers == "1":
                         ticket_type = "Domestic Ticket"
                     miles = miles - int("2500")
                     print("Redeemed miles for {} {}".format(miles,ticket_type))
@@ -117,9 +117,36 @@ def buy_plane_ticket(passenger,program,program2,miles):
                         i.miles = miles
                     update = Passenger1.update(miles=i.miles)
                     update.execute()
-
-
-        # print("Purchased tickets for {} travelers on {}".format(number_of_travelers,airline_choice))
+            if ticket_type == "2":
+                if miles < int("4000"):
+                    print("failed to reedem award travel. Passenger has {} miles but needs 40000".format(miles))
+                else:
+                    ticket_type = "Domestic First Tickets"
+                    if number_of_travelers == "1":
+                        ticket_type = "Domestic First Ticket"
+                    miles = miles - int("4000")
+                    print("Redeemed miles for {} {}".format(miles,ticket_type))
+                    list_of_passengers = Passenger1.select(Passenger1)
+                    list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passenger))
+                    for i in list_of_passengers:
+                        i.miles = miles
+                    update = Passenger1.update(miles=i.miles)
+                    update.execute()
+            if ticket_type == "3":
+                if miles < int("6500"):
+                    print("failed to reedem award travel. Passenger has {} miles but needs 60000".format(miles))
+                else:
+                    ticket_type = "International Tickets"
+                    if number_of_travelers == "1":
+                        ticket_type = "International Ticket"
+                    miles = miles - int("6500")
+                    print("Redeemed miles for {} {}".format(miles,ticket_type))
+                    list_of_passengers = Passenger1.select(Passenger1)
+                    list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passenger))
+                    for i in list_of_passengers:
+                        i.miles = miles
+                    update = Passenger1.update(miles=i.miles)
+                    update.execute()
         print(passenger)# passengers name
         print(program2) # 2nd program they joined
         print(program) #first program they joined
