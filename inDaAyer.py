@@ -6,22 +6,18 @@ from random import randint
 db = SqliteDatabase('Passenger_8rdtry.db')
 
 class Passenger1(Model):
-
     passenger = CharField(max_length=255, unique=True)
     program = CharField(max_length=255)
     program2 = CharField(max_length=255)
     miles = CharField(max_length=255)
     american_membership = CharField(max_length=255)
     delta_membership = CharField(max_length=255)
-
     class Meta:
         database = db
 def initialize():
     db.connect()
     db.create_tables([Passenger1])
-
 def join_program(passeng) :
-    # program_choice = input("Select a frequent flyer travel program to join: \n1.Delta\n2.American")
     """join program(s)"""
     print("Select a frequent flyer travel program to join: \n1.Delta\n2.American"
           "\nPress control-D when finished")
@@ -276,10 +272,17 @@ if __name__ == '__main__':
 #if they already have miles, add miles from new trip#
 #if they have no miles, add the miles#
 #add legit rewards numbers for the american and delta rewards programs#
-#use proper math when purchasing from domestic,domestic first,international... must have sufficent pts
-#add american and delta membership numbers to db... specific memebership numbers tied to specific passengers
-#errors when we enter just 2 as the only airlines program we want to join
-#if they dont join one of the programs dont put 0 for their freq flier program
+#use proper math when purchasing from domestic,domestic first,international... must have sufficent pts#
+#add american and delta membership numbers to db... specific memebership numbers tied to specific passengers#
+#errors when we enter just 2 as the only airlines program we want to join#
+#if they dont join one of the programs dont put 0 for their freq flier program#
+#if theyre rejected from reedming rewards points, ack the amt of tickets/passengers they were denied for
+#if theyre accepted from redeeming rewards points, ack the amt of tickets/passengers they were accepted for
+#if they enter something other than y/n, we need to only accept y or n, nothing else
+#make sure choice 3 loops back to menu rather than exiting once were past first menu loop
+#if they select a choice out of range 1-3, return to same page ackoledge that choice was out of range
+#if they try to buy a plane ticket and arent in a program, acknowledge that and dont allow them to progress
+#select travelers with number instead of exact name query
 
 
 
