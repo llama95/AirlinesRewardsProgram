@@ -3,7 +3,7 @@ from collections import OrderedDict
 import sys
 from random import randint
 
-db = SqliteDatabase('Passenger_7rdtry.db')
+db = SqliteDatabase('Passenger_8rdtry.db')
 
 class Passenger1(Model):
 
@@ -11,8 +11,8 @@ class Passenger1(Model):
     program = CharField(max_length=255)
     program2 = CharField(max_length=255)
     miles = CharField(max_length=255)
-    american_membership = CharField(max_length=255, unique=True)
-    delta_membership = CharField(max_length=255, unique=True)
+    american_membership = CharField(max_length=255)
+    delta_membership = CharField(max_length=255)
 
     class Meta:
         database = db
@@ -62,10 +62,10 @@ def added_new_passenger(passeng,data,data2,miles=0):
     list_of_passengers = Passenger1.select(Passenger1)
     list_of_passengers = list_of_passengers.where(Passenger1.passenger.contains(passeng))
 
-    if "True" in data:
-        data = "Didnt Choose Delta Program"
-    if "True" in data2:
-        data = "Didnt Choose American Program"
+    # if "True" in data:
+    #     data = "Didnt Choose Delta Program"
+    # if "True" in data2:
+    #     data = "Didnt Choose American Program"
     if data == "1":
         for i in list_of_passengers:
             i.american_membership = american_member_number
@@ -92,12 +92,19 @@ def added_new_passenger(passeng,data,data2,miles=0):
         data2 = "American Airlines Frequent Flier Program"
     print("Added new traveler")
     print("Name: {}".format(passeng))
-    try:
-        # student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
+
+    if data2 == 0:
+        print("FUCK data2")
+        print("Memberships: \n{}\nMembership Number = {}".format(data,delta_member_number))
+    elif data == 0:
+        print("fuck data")
+        print("Memberships: \n{}\nMembership Number = {}".format(data, american_member_number))
+    else:
+    # student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
         print("Memberships: \n{}\nMembership Number = {}\n{}\nMembership Number = {}".format(data,delta_member_number,data2,american_member_number))
-    except IntegrityError:
-        print("didnt work")
-        print("Nobody in db yet")
+    # except IntegrityError:
+    #     print("didnt work")
+    #     print("Nobody in db yet")
 
 def create_passenger():
     """add a passenger"""
@@ -271,6 +278,9 @@ if __name__ == '__main__':
 #add legit rewards numbers for the american and delta rewards programs#
 #use proper math when purchasing from domestic,domestic first,international... must have sufficent pts
 #add american and delta membership numbers to db... specific memebership numbers tied to specific passengers
+#errors when we enter just 2 as the only airlines program we want to join
+#if they dont join one of the programs dont put 0 for their freq flier program
+
 
 
 
