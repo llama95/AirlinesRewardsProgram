@@ -90,10 +90,10 @@ def added_new_passenger(passeng,data,data2,miles=0):
     print("Name: {}".format(passeng))
 
     if data2 == 0:
-        print("FUCK data2")
+        # print("hit error data2")
         print("Memberships: \n{}\nMembership Number = {}".format(data,delta_member_number))
     elif data == 0:
-        print("fuck data")
+        # print("hit error1 data")
         print("Memberships: \n{}\nMembership Number = {}".format(data, american_member_number))
     else:
     # student = Passenger1.select().order_by(Passenger1.id.desc()).get() #sort Passenger1.id's in desc order, get the first one
@@ -193,10 +193,10 @@ def buy_plane_ticket(passenger,program,program2,miles):
                         i.miles = miles
                     update = Passenger1.update(miles=i.miles)
                     update.execute()
-        print(passenger)# passengers name
-        print(program2) # 2nd program they joined
-        print(program) #first program they joined
-        print(miles) #miles
+        # print(passenger)# passengers name
+        # print(program2) # 2nd program they joined
+        # print(program) #first program they joined
+        # print(miles) #miles
 
 def view_entries(search_query = None):
     """View prev entries"""
@@ -211,11 +211,11 @@ def view_entries(search_query = None):
         for i in list_of_passengers:
             print("before update {}".format(i.miles))
             if i.miles == "0":
-                print("found zero")
+                # print("found zero")
                 i.miles = miles
                 print(i.miles)
             else:
-                print("found not zero")
+                # print("found not zero")
                 i.miles = int(i.miles) + int(miles)
             print(i.miles)
         update = Passenger1.update(miles=i.miles)
