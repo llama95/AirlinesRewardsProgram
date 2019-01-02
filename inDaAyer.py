@@ -161,6 +161,9 @@ def buy_plane_ticket(passenger,program,program2,miles):
             if ticket_type == "2":
                 if miles < int("4000"):
                     print("failed to reedem award travel. Passenger has {} miles but needs 40000".format(miles))
+                    print("Name: {}".format(passenger))
+                    return
+
                 else:
                     ticket_type = "Domestic First Tickets"
                     if number_of_travelers == "1":
@@ -176,6 +179,8 @@ def buy_plane_ticket(passenger,program,program2,miles):
             if ticket_type == "3":
                 if miles < int("6500"):
                     print("failed to reedem award travel. Passenger has {} miles but needs 60000".format(miles))
+                    print("Name: {}".format(passenger))
+                    return
                 else:
                     ticket_type = "International Tickets"
                     if number_of_travelers == "1":
@@ -224,6 +229,9 @@ def view_entries(search_query = None):
 def search_entries():
     """Search entries for a string"""
     list_of_passengers = Passenger1.select(Passenger1)
+    if len(list_of_passengers) == 0:
+        print("No travelers exist yet")
+        return
     print("Select Traveler")
     for i in list_of_passengers:
         print(i.passenger)
@@ -278,11 +286,14 @@ if __name__ == '__main__':
 #if they dont join one of the programs dont put 0 for their freq flier program#
 #if theyre rejected from reedming rewards points, ack the amt of tickets/passengers they were denied for
 #if theyre accepted from redeeming rewards points, ack the amt of tickets/passengers they were accepted for
+#if rejected show memberships
+#no travelers exist message if no travelers#
 #if they enter something other than y/n, we need to only accept y or n, nothing else
 #make sure choice 3 loops back to menu rather than exiting once were past first menu loop
 #if they select a choice out of range 1-3, return to same page ackoledge that choice was out of range
 #if they try to buy a plane ticket and arent in a program, acknowledge that and dont allow them to progress
 #select travelers with number instead of exact name query
+#delta vs american miles fuckkkk
 
 
 
