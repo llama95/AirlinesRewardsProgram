@@ -26,6 +26,9 @@ def join_program(passeng) :
     null = True
     if data:
         add_another_program = input("do you want to add another program? y/n")
+        if add_another_program != "n" and add_another_program != "y":
+            print("Please Enter y or n only")
+            join_program(passeng)
         if add_another_program == "n":
             try:
                 inp = input("save entry y or n ").lower()
