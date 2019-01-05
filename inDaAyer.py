@@ -121,6 +121,9 @@ def buy_plane_ticket(passenger,program,program2,miles):
     if ticket_choice == "1":
         print("Select airline")
         airline_choice = input("1.Delta Airlines 2.American Airlines")
+        if airline_choice != "1" and airline_choice != "2":
+            print("Enter a valid number")
+            buy_plane_ticket(passenger, program, program2, miles)
         number_of_travelers = input("Enter Number of travelers")
         #sammy belongs to 1/delta
         #if the airline choice 1/2 is not airline choice cant be both program 1 and 2
@@ -138,9 +141,15 @@ def buy_plane_ticket(passenger,program,program2,miles):
         if airline_choice == "2":
             airline_choice = "American Airlines"
         rewards_ticket = input("Will this be a rewards ticket y/n?")
+        if rewards_ticket != "y" and rewards_ticket != "n":
+            print("Please enter a valid choice y or n")
+            buy_plane_ticket(passenger, program, program2, miles)
         if rewards_ticket == "y":
             print("Select Ticket Type")
             ticket_type = input("1.Domestic 2.Domestic First 3.International")
+            if ticket_type != "1" and ticket_type != "2" and ticket_type != "3":
+                print("Please enter 1, 2, or 3....")
+                buy_plane_ticket(passenger, program, program2, miles)
             if ticket_type == "1":
                 ticket_type = "Domestic Tickets"
                 if number_of_travelers == "1":
