@@ -308,11 +308,10 @@ if __name__ == '__main__':
 #if theyre rejected from reedming rewards points, ack the amt of tickets/passengers they were denied for#
 #no travelers exist message if no travelers#
 #if they enter something other than y/n, we need to only accept y or n, nothing else#
-#make sure choice 3 loops back to menu rather than exiting once were past first menu loop#
-#if they select a choice out of range 1-3, return to same page ackoledge that choice was out of range#
-#if they try to buy a plane ticket and arent in a program, acknowledge that and dont allow them to progress
-#select travelers with number instead of exact name query
-#delta vs american miles fuckkkk
+#make sure choice 3 loops back to menu rather than exiting once were past first menu loop#@
+#if they try to buy a plane ticket and arent in a program, acknowledge that and dont allow them to progress@
+#select travelers with number instead of exact name query#
+#delta vs american miles fuckkkk#
 
 
 
