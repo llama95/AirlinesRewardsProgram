@@ -258,6 +258,9 @@ def search_entries():
 def menu_loop():
     while True:
         menuchoice = menuChoice = input("    1.Create Traveler\n    2.Purchase Travel\n    3.Quit\n  >")
+        if menuchoice != "1" and menuChoice != "2" and menuchoice != "3":
+            print("Please enter a menuchoice 1-3 from the above choices")
+            menu_loop()
         if menuChoice == "1":
            create_passenger()
         if menuChoice == "2":
@@ -302,13 +305,11 @@ if __name__ == '__main__':
 #add american and delta membership numbers to db... specific memebership numbers tied to specific passengers#
 #errors when we enter just 2 as the only airlines program we want to join#
 #if they dont join one of the programs dont put 0 for their freq flier program#
-#if theyre rejected from reedming rewards points, ack the amt of tickets/passengers they were denied for
-#if theyre accepted from redeeming rewards points, ack the amt of tickets/passengers they were accepted for
-#if rejected show memberships
+#if theyre rejected from reedming rewards points, ack the amt of tickets/passengers they were denied for#
 #no travelers exist message if no travelers#
-#if they enter something other than y/n, we need to only accept y or n, nothing else
-#make sure choice 3 loops back to menu rather than exiting once were past first menu loop
-#if they select a choice out of range 1-3, return to same page ackoledge that choice was out of range
+#if they enter something other than y/n, we need to only accept y or n, nothing else#
+#make sure choice 3 loops back to menu rather than exiting once were past first menu loop#
+#if they select a choice out of range 1-3, return to same page ackoledge that choice was out of range#
 #if they try to buy a plane ticket and arent in a program, acknowledge that and dont allow them to progress
 #select travelers with number instead of exact name query
 #delta vs american miles fuckkkk
