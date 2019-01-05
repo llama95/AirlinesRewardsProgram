@@ -24,6 +24,9 @@ def join_program(passeng) :
     data = sys.stdin.read().strip()  # read all of the data that comes in
     # data = input("Enter traveler name: ")
     null = True
+    if data != "1" and data != "2":
+        print("Select 1 or 2 cmon now bruh")
+        join_program(passeng)
     if data:
         add_another_program = input("do you want to add another program? y/n")
         if add_another_program != "n" and add_another_program != "y":
