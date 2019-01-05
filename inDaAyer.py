@@ -115,6 +115,9 @@ def create_passenger():
 def buy_plane_ticket(passenger,program,program2,miles):
     print("Please choose from the following options")
     ticket_choice = input("1.Buy plane ticket\n2.Return to main menu")
+    if ticket_choice != "1" and ticket_choice != "2":
+        print("Please enter a valid selection")
+        buy_plane_ticket(passenger,program,program2,miles)
     if ticket_choice == "1":
         print("Select airline")
         airline_choice = input("1.Delta Airlines 2.American Airlines")
